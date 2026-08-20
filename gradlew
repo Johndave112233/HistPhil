@@ -151,7 +151,7 @@ fi
 # Escape application args
 save () {
     for arg do
-        printf '%s\n' "$arg" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/'/' >> "$app_args_file"
+        printf '%s\n' "$arg" | sed "s/'/'\\\\''/g;1s/^/'/;\$s/\$/'/'/" >> "$app_args_file"
     done
 }
 
