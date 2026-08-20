@@ -1,54 +1,48 @@
-name: Build Android APK
+steps:
+  - name: Checkout project
+    uses: actions/checkout@v4
 
-on:
-  push:
-    branches:
-      - main
-      - master
-  workflow_dispatch:
+  - name: Set up JDK 17
+    uses: actions/setup-java@v4
+    with:
+      distribution: 'zulu'
+      java-version: '17'
 
-jobs:
-  build:
-    name: Build Debug APK
-    runs-on: ubuntu-latest
+  - name: Setup Gradle Environment
+    uses: gradle/actions/setup-gradle@v3
 
-    steps:
-      - name: Checkout project
-        uses: actions/checkout@v4
+  - name: Set up Android SDK
+    uses: subosito/android-sdk-action@v2
+    with:
+      api-level: 33
+      build-tools: '33.0.2'
+      components: 'platform-tools,platforms;android-33,build-tools;33.0.2,cmdline-tools;latest'
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'zulu'
-          java-version: '17'
+  - name: Accept Android SDK Licenses
+    run: |
+      yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
-      - name: Setup Gradle Environment
-        uses: gradle/actions/setup-gradle@v3
+  - name: Create debug keystore
+    run: |
+      keytool -genkeypair \
+        -v \
+        -keystore debug.keystore \
+        -storepass android \
+        -alias androiddebugkey \
+        -keypass android \
+        -keyalg RSA \
+        -keysize 2048 \
+        -validity 10000 \
+        -dname "CN=Android Debug,O=Android,C=US"
 
-      - name: Accept Android SDK Licenses
-        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+  - name: Build Debug APK with System Gradle
+    run: |
+      chmod +x ./gradlew
+      ./gradlew assembleDebug --stacktrace --no-daemon
 
-      - name: Create debug keystore
-        run: |
-          keytool -genkeypair \
-            -v \
-            -keystore debug.keystore \
-            -storepass android \
-            -alias androiddebugkey \
-            -keypass android \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
-
-      - name: Build Debug APK with System Gradle
-        run: |
-          chmod +x ./gradlew
-          ./gradlew assembleDebug --stacktrace --no-daemon
-
-      - name: Upload Compiled APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: HisPhi-Debug-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
+  - name: Upload Compiled APK
+    uses: actions/upload-artifact@v4
+    with:
+      name: HisPhi-Debug-APK
+      path: app/build/outputs/apk/debug/app-debug.apk
+      if-no-files-found: error
