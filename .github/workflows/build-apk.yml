@@ -44,7 +44,9 @@ jobs:
       - name: Build Debug APK with System Gradle
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleDebug --stacktrace --no-daemon
+          ./gradlew assembleDebug 
+          --stacktrace 
+          --no-daemon
 
       - name: Upload Compiled APK
         uses: actions/upload-artifact@v4
