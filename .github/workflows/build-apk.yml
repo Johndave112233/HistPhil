@@ -42,7 +42,9 @@ jobs:
             -dname "CN=Android Debug,O=Android,C=US"
 
       - name: Build Debug APK with System Gradle
-        run: gradle :app:assembleDebug --stacktrace --no-daemon
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --stacktrace --no-daemon
 
       - name: Upload Compiled APK
         uses: actions/upload-artifact@v4
