@@ -38,11 +38,6 @@ android {
         resValues false
         shaders false
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.5.10'
-    }
-}
-
 dependencies {
     // Core Android
     implementation 'androidx.core:core-ktx:1.12.0'
