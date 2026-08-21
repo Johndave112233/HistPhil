@@ -80,8 +80,8 @@ fun HomeScreen(
     val recentSearches by repository.recentSearches.collectAsState(initial = emptyList())
     val allTopics = remember { repository.getAllTopics() }
     val featuredTopic = remember {
-    allTopics.find { it.isWeeklyHighlight } ?: allTopics.firstOrNull()
-}
+    allTopics.find { it.isWeeklyHighlight } ?: allTopics.first()
+    }
     val recommendedTopics = remember { repository.getRecommendedTopics() }
 
     val quickQuestions = listOf(
