@@ -1,3 +1,4 @@
+
 name: HistPhil APK Build
 
 on:
@@ -31,9 +32,10 @@ jobs:
           sdkmanager "platforms;android-34"
           sdkmanager "build-tools;34.0.0"
 
-      - name: Fix Gradle wrapper
+      - name: Make Gradle executable
         run: |
-          sed -i 's/\r$//' ./gradlew
+          tr -d '\r' < ./gradlew > ./gradlew.tmp
+          mv ./gradlew.tmp ./gradlew
           chmod +x ./gradlew
 
       - name: Check Gradle version
@@ -62,12 +64,6 @@ jobs:
         if: steps.build.outcome == 'failure'
         run: exit 1
 
-      - name: Check Gradle version
-        run: ./gradlew --version
-
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
-  
       - name: Verify APK
         run: |
           test -f app/build/outputs/apk/debug/app-debug.apk
@@ -78,3 +74,4 @@ jobs:
         with:
           name: HistPhil-Debug-APK
           path: app/build/outputs/apk/debug/app-debug.apk
+
