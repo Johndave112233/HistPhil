@@ -19,12 +19,6 @@ android {
     targetSdk = 36
     versionCode = 1
     versionName = "1.0"
-
-    buildConfigField(
-        "String",
-        "GEMINI_API_KEY",
-        "\"\""
-    )
 }
 
   signingConfigs {
@@ -43,13 +37,24 @@ android {
     }
   }
 
-  buildTypes {
-    release {
-      isCrunchPngs = false
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("release")
+  buildFeatures {
+    compose = true
+    buildConfig = true
+}
+
+buildTypes {
+    debug {
+        buildConfigField(
+            "String",
+            "GEMINI_API_KEY",
+            "\"\""
+        )
     }
+
+    release {
+        isMinifyEnabled = false
+    }
+}
     debug { signingConfig = signingConfigs.getByName("debugConfig") }
   }
   compileOptions {
