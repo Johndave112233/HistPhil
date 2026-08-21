@@ -79,7 +79,9 @@ fun HomeScreen(
     var searchQuery by remember { mutableStateOf("") }
     val recentSearches by repository.recentSearches.collectAsState(initial = emptyList())
     val allTopics = remember { repository.getAllTopics() }
-    val featuredTopic = remember { allTopics.find { it.isWeeklyHighlight } ?: allTopics.first() }
+    val featuredTopic = remember {
+    allTopics.find { it.isWeeklyHighlight } ?: allTopics.firstOrNull()
+}
     val recommendedTopics = remember { repository.getRecommendedTopics() }
 
     val quickQuestions = listOf(
