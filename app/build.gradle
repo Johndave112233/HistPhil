@@ -19,7 +19,9 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'
+            ), 'proguard-rules.pro'
         }
     }
 
@@ -34,27 +36,42 @@ android {
 
     buildFeatures {
         compose true
+        buildConfig true
         aidl false
         renderScript false
         resValues false
         shaders false
     }
-}   
+}
 
 dependencies {
+    // Android
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
 
+    // Jetpack Compose
     implementation 'androidx.compose.ui:ui:1.6.0'
     implementation 'androidx.compose.material3:material3:1.1.2'
+    implementation 'androidx.compose.material:material-icons-extended:1.6.0'
     implementation 'androidx.activity:activity-compose:1.8.1'
+
+    // Lifecycle
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
 
-    testImplementation 'junit:junit:4.13.2'
-    // Compose icons
-implementation 'androidx.compose.material:material-icons-extended:1.6.0'
+    // Navigation
+    implementation 'androidx.navigation:navigation-compose:2.7.7'
 
-// Navigation Compose
-implementation 'androidx.navigation:navigation-compose:2.7.7'
+    // OkHttp (GeminiHistoryService)
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
+    // Room Database
+    def room_version = "2.6.1"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
 }
