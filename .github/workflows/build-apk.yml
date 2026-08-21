@@ -38,12 +38,17 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: "8.7"
+          cache-disabled: true
 
       - name: Check Java version
         run: java -version
 
       - name: Check Gradle version
         run: gradle --version
+
+      - name: Generate BuildConfig
+        run: |
+          gradle :app:generateDebugBuildConfig
 
       - name: Build Debug APK
         id: build
