@@ -79,9 +79,12 @@ fun HomeScreen(
     var searchQuery by remember { mutableStateOf("") }
     val recentSearches by repository.recentSearches.collectAsState(initial = emptyList())
     val allTopics = remember { repository.getAllTopics() }
-    val featuredTopic = remember {
-    allTopics.find { it.isWeeklyHighlight } ?: allTopics.first()
-    }
+    val featuredTopic?.let { topic ->
+    WeeklyHighlightCard(
+        topic = topic,
+        onClick = { onNavigateToDetail(topic.id) }
+    )
+}
     val recommendedTopics = remember { repository.getRecommendedTopics() }
 
     val quickQuestions = listOf(
@@ -298,11 +301,12 @@ fun HomeScreen(
             // Weekly Highlight Card
             item {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp)) {
-                    WeeklyHighlightCard(
-                        topic = featuredTopic,
-                        onClick = { onNavigateToDetail(featuredTopic.id) }
-                    )
-                }
+                    featuredTopic?.let { topic ->
+    WeeklyHighlightCard(
+        topic = topic,
+        onClick = { onNavigateToDetail(topic.id) }
+    )
+}
             }
 
             // Current Connected Network Preview (Geometric 2-Column Cards)
