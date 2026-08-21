@@ -1,4 +1,4 @@
-name: HistPhil APK
+name: Build Debug APK
 
 on:
   workflow_dispatch:
@@ -30,14 +30,8 @@ jobs:
           sdkmanager "platforms;android-34"
           sdkmanager "build-tools;34.0.0"
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-
       - name: Make gradlew executable
         run: chmod +x ./gradlew
-
-      - name: Clean project
-        run: ./gradlew clean --no-daemon
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace --console=plain
