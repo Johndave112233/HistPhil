@@ -1,6 +1,5 @@
 package com.example.data.api
 
-import com.example.BuildConfig
 import com.example.data.repository.PhilippineHistoryData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -48,11 +47,7 @@ Guidelines for your answers:
         question: String,
         history: List<ChatHistoryMessage> = emptyList()
     ): String = withContext(Dispatchers.IO) {
-        val apiKey = try {
-            BuildConfig.GEMINI_API_KEY
-        } catch (e: Exception) {
-            ""
-        }
+        val apiKey = ""
 
         if (apiKey.isNullOrBlank() || apiKey == "MY_GEMINI_API_KEY") {
             return@withContext generateSmartOfflineAnswer(question)
